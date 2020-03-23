@@ -4,24 +4,9 @@ import { Link } from 'react-router-dom'
 
 export default class ViewUsers extends React.Component {
     constructor(props) {
-        super(props);
-
-        console.log(JSON.parse(localStorage.getItem('myMembers')))
-
-
+        super(props)
         this.state = {
-            listUsers: [
-                {
-                    id: 1,
-                    fullName: "Himanshu Ganapavarapu",
-                    email: "himanshu.ganpa@gmail.com"
-                },
-                {
-                    id: 2,
-                    fullName: "Shivani Wakade",
-                    email: "shs.shs@gmail.com"
-                }
-            ]
+            listUsers: []
         }
     }
 
@@ -49,7 +34,6 @@ export default class ViewUsers extends React.Component {
     }
 
     deleteUser = (id) => {
-        console.log(id)
         let list = this.state.listUsers;
         let updatedUsers = []; 
         for(var i in list) {

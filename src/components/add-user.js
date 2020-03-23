@@ -138,9 +138,6 @@ export default class AddUser extends React.Component {
             hasErrors = true;
         }
 
-        console.log(errors)
-        console.log(hasErrors)
-
         if (hasErrors != true) {
             errors = {
                 fullName: '',
@@ -200,8 +197,6 @@ export default class AddUser extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        
-        console.log(this.handleErrors())
         if (!this.handleErrors()) {
             this.setState({
                 ...this.state,
