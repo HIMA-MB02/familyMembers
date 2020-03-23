@@ -6,13 +6,18 @@ export default class ViewUsers extends React.Component {
     constructor(props) {
         super(props);
 
+        console.log(JSON.parse(localStorage.getItem('myMembers')))
+
+
         this.state = {
             listUsers: [
                 {
+                    id: 1,
                     fullName: "Himanshu Ganapavarapu",
                     email: "himanshu.ganpa@gmail.com"
                 },
                 {
+                    id: 2,
                     fullName: "Shivani Wakade",
                     email: "shs.shs@gmail.com"
                 }
@@ -21,16 +26,16 @@ export default class ViewUsers extends React.Component {
     }
 
     componentDidMount() {
-        let user = this.props.location.state;
-        if(user !== undefined){
-            let users = this.state.listUsers;
-            users.push(this.props.location.state.currentUser);
+        if(JSON.parse(localStorage.getItem('myMembers')) != null){
+            let listUsers = JSON.parse(localStorage.getItem('myMembers'))
             this.setState({
                 ...this.state,
-                listUsers: users
+                listUsers: listUsers
             })
-
-            this.props.location.state = null;
+        } 
+        else {
+            localStorage.setItem('myMembers', JSON.stringify(this.state.listUsers))
+            localStorage.setItem('currentId', `${this.state.listUsers.length + 1}`)
         }
     }
 
@@ -46,21 +51,23 @@ export default class ViewUsers extends React.Component {
     deleteUser = (id) => {
         console.log(id)
         let list = this.state.listUsers;
+        let updatedUsers = []; 
         for(var i in list) {
-            if(list[i].id === id) {
-                delete list[i]
+            if(list[i].id !== id) {
+                updatedUsers.push(list[i])
             }
         }
         this.setState({
-            listUsers: list
+            listUsers: updatedUsers
         })
+        localStorage.setItem("myMembers", JSON.stringify(updatedUsers))
     }
 
     displayUsers = () => {
         let users = this.state.listUsers;
         return users.map((user, i) => {
             return (
-                <div className="col-md-4 card border-secondary mb-3 card-style" key={i}>
+                <div className="col-md-3 card border-secondary mb-3 card-style" key={i}>
                     <div className="text-right">
                         <button onClick={()=> {this.editUser(user)}}><i className="fa fa-edit"></i></button>
                         <button onClick={() => {this.deleteUser(user.id)}}><i className="fa fa-trash"></i></button>
@@ -79,6 +86,16 @@ export default class ViewUsers extends React.Component {
         })
     }
 
+    addUser() {
+        this.props.history.push({
+            pathname: '/add-edit-user/',
+            state: {
+                currentUser: null,
+                listUsers: this.state.listUsers
+            }
+        });
+    }
+
 
     render() {
         return (
@@ -91,17 +108,13 @@ export default class ViewUsers extends React.Component {
                         {this.displayUsers()}
 
                         {/*ADD USER BOX */}
-                        <div className="col-md-4 card mb-3 border-secondary card-style">
-                            <Link to="/add-edit-user/" id="add-edit-user-card">
-
+                        <div onClick={this.addUser.bind(this)} className="col-md-3 card mb-3 border-secondary card-style" id="add-edit-user-card">
                                 <div className="card-body row">
                                     <div className="col-md-12 text-center">
                                         <i className="fa fa-plus fa-4x" aria-hidden="true"></i>
                                         <p>Add Family Member</p>
                                     </div>
                                 </div>
-                            </Link>
-
                         </div>
                     </div>
 

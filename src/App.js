@@ -21,7 +21,7 @@ function App() {
           </div>
           <div className="row">
             <div className="breadcrumb">
-              <div className="breadcrumb-item"><b>Financial Planning</b> > Users > View</div>
+              <div className="breadcrumb-item"><b>Financial Planning</b> > Users</div>
             </div>
           </div>
         </header>
